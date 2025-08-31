@@ -1,0 +1,8 @@
+SELECT CURRENT_DATE() ;
+SELECT IFNULL(name, 'Unknown') FROM employees;
+SELECT * FROM orders LIMIT 5;
+SELECT DATE_FORMAT(order_date, 'YYYY-MM-DD') FROM orders;
+SELECT CONCAT(first_name, last_name) AS full_name FROM customers;
+SELECT FLOOR(salary) FROM employees;
+SELECT name FROM products WHERE price > 100;
+SELECT IFNULL(description, 'No Desc') FROM items;

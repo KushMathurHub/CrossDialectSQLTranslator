@@ -1,8 +1,5 @@
 package com.kush.sqltranslator;
 
-import org.apache.calcite.sql.parser.SqlParser;
-import org.apache.calcite.sql.parser.SqlParseException;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -24,13 +21,10 @@ public class App {
 
             for (String query : queries) {
                 try {
-                    SqlParser parser = SqlParser.create(query);
-                    parser.parseStmt();
-
                     String translated = translateQuery(query);
                     translatedQueries.add(translated);
-                } catch (SqlParseException e) {
-                    errors.add("Failed to parse query: " + query);
+                } catch (Exception e) {
+                    errors.add("Failed to translate query: " + query);
                 }
             }
 
@@ -68,17 +62,24 @@ public class App {
         String translated = query;
 
         translated = translated.replaceAll("(?i)SYSDATE", "CURRENT_DATE()");
+        translated = translated.replaceAll("(?i)SYSTIMESTAMP", "CURRENT_TIMESTAMP()");
         translated = translated.replaceAll("(?i)NVL\\s*\\(", "IFNULL(");
-        translated = translated.replaceAll("(?i)ROWNUM", "LIMIT 1");
-        translated = translated.replaceAll("\\|\\|", ",");
-        if (translated.contains(",")) {
-            translated = "CONCAT(" + translated + ")";
-        }
+        translated = translated.replaceAll("(?i)TRUNC\\s*\\(([^,]+),\\s*0\\)", "FLOOR($1)");
+        translated = translated.replaceAll("(?i)ROUND\\s*\\(([^,]+),\\s*(\\d+)\\)", "ROUND($1, $2)");
         translated = translated.replaceAll("(?i)FROM\\s+DUAL", "");
+        translated = translated.replaceAll("(\\w+)\\s*\\|\\|\\s*(\\w+)", "CONCAT($1, $2)");
+        translated = translated.replaceAll("(?i)TO_CHAR\\s*\\(([^,]+),\\s*'([^']+)'\\)", "DATE_FORMAT($1, '$2')");
+        translated = translated.replaceAll("(?i)TO_DATE\\s*\\(([^,]+),\\s*'([^']+)'\\)", "STR_TO_DATE($1, '$2')");
+        translated = translated.replaceAll("(?i)WHERE\\s+ROWNUM\\s*<=\\s*(\\d+)", "LIMIT $1");
+
+        if (!translated.endsWith(";")) {
+            translated += ";";
+        }
 
         return translated.trim();
     }
 }
+
 
 
 
