@@ -1,0 +1,8 @@
+SELECT SYSDATE FROM dual;
+SELECT NVL(name, 'Unknown') FROM employees;
+SELECT * FROM orders WHERE ROWNUM <= 5;
+SELECT TO_CHAR(order_date, 'YYYY-MM-DD') FROM orders;
+SELECT first_name || last_name AS full_name FROM customers;
+SELECT TRUNC(salary, 0) FROM employees;
+SELECT name FROM products WHERE price > 100;
+SELECT NVL(description, 'No Desc') FROM items;
