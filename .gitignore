@@ -1,15 +1,47 @@
-# Maven build
-target/
+# Compiled class files
 *.class
 
-# Logs
+# Log files
 *.log
 
-# IDE settings
-.vscode/
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Virtual machine crash logs
+hs_err_pid*
+
+# Maven target folder
+target/
+
+# IntelliJ IDEA project files
 .idea/
 *.iml
+out/
 
-# OS files
+# VS Code settings
+.vscode/
+
+# Eclipse project files
+.project
+.classpath
+.settings/
+
+# Mac / Windows system files
 .DS_Store
 Thumbs.db
+
+# Temporary files
+*.tmp
+*.swp
